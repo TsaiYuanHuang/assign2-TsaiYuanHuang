@@ -56,6 +56,9 @@ void setup(){
 }
 
 void draw(){
+
+  frameRate(60);
+  
   switch(gameState){
     case 0:
       image(title,0,0);
