@@ -5,17 +5,23 @@ int xSoldier,ySoldier,rowSoldier,
 xGroundhog,yGroundhog,rowGroundhog,
 xCabbage,yCabbage,rowCabbage,lineCabbage;
 
-int life;
-
 final int TOTAL_LIFE = 2;
 final int X_GROUNDHOG = 320;
 final int Y_GROUNDHOG = 80;
+int life = TOTAL_LIFE;
 
 final int GAME_START = 0;
 final int GAME_RUN = 1;
 final int GAME_OVER = 2;
 int gameState = GAME_START;
 
+float speed = 80/15;
+int steps = 0;
+final int IDLE = 3;
+final int GO_DOWN = 4;
+final int GO_LEFT = 5;
+final int GO_RIGHT = 6;
+int moveState = IDLE;
 
 void setup(){
   size(640,480);
@@ -47,15 +53,9 @@ void setup(){
   lineCabbage = floor(random(0,8));
   xCabbage = 80*lineCabbage;
   yCabbage = 80*rowCabbage;
-  life = TOTAL_LIFE;
-
 }
 
 void draw(){
-  
-  frameRate(60);
-
-  
   switch(gameState){
     case 0:
       image(title,0,0);
@@ -79,6 +79,8 @@ void draw(){
           xGroundhog = X_GROUNDHOG;
           yGroundhog = Y_GROUNDHOG;
           life--;
+          moveState = 3;
+          steps = 0;
       }
     
       //AABB detection_groundhog & cabbage
@@ -92,7 +94,6 @@ void draw(){
       fill(124, 204, 25);
       noStroke();
       rect(0, 145, 640, 15);
-      
       //sun
       fill(255, 255, 0);
       noStroke();
@@ -100,10 +101,8 @@ void draw(){
       fill(253, 184, 19);
       noStroke();
       ellipse(590, 50, 120, 120);
-      
-      //soil img
+      //soil
       image(soilImg, 0, 160);
-      
       //cabbage
       image(cabbageImg,xCabbage,yCabbage);
         
@@ -113,25 +112,63 @@ void draw(){
         xSoldier = -80;
       }
       image(soldierImg, xSoldier, ySoldier);
-      
-
-      //groundhogimg
-      image(groundhogIdleImg,xGroundhog,yGroundhog);
-
-
-      
+         
+      //groundhog control
+      switch(moveState){
+        case 3:
+          image(groundhogIdleImg,xGroundhog,yGroundhog); 
+          break;
+        case 4:
+          steps ++;
+          yGroundhog += speed;
+          if(steps == 16){
+            steps = 0; 
+            image(groundhogIdleImg,xGroundhog,yGroundhog);
+            moveState = 3;
+          }
+          image(groundhogDown,xGroundhog,yGroundhog); 
+          if(yGroundhog >= height-80){
+            yGroundhog = height-80;
+          }  
+          break;
+        case 5:
+          steps ++;
+          xGroundhog -= speed;
+          if(steps == 16){
+            steps = 0; 
+            image(groundhogIdleImg,xGroundhog,yGroundhog);
+            moveState = 3;
+          }
+          image(groundhogLeft,xGroundhog,yGroundhog); 
+          if(xGroundhog <= 0){
+            xGroundhog = 0;
+          }  
+          break;
+        case 6:
+          steps ++;
+          xGroundhog += speed;
+          if(steps == 16){
+            steps = 0; 
+            image(groundhogIdleImg,xGroundhog,yGroundhog);
+            moveState = 3;
+          }
+          image(groundhogRight,xGroundhog,yGroundhog); 
+          if(xGroundhog >= width-80){
+            xGroundhog = width-80;
+          }  
+          break;  
+      }
+     
       //life    
       if(life == 3){
         image(lifeImg, 10, 10); 
         image(lifeImg, 80, 10);
         image(lifeImg, 150, 10);
       }
-      
       if(life == 2){
         image(lifeImg, 10, 10); 
         image(lifeImg, 80, 10);
       }
-      
       if(life == 1){
         image(lifeImg, 10, 10); 
         image(lifeImg, 80, -80);
@@ -146,7 +183,6 @@ void draw(){
     case 2:
       image(gameover,0,0);
       image(restartNormal,248,360);
-      //hover
       if(mouseX >= 248 && mouseX <= 392 && mouseY >=360 && mouseY <=420){
         image(restartHovered,248,360);
         if(mousePressed){
@@ -159,6 +195,7 @@ void draw(){
           xSoldier = -80;
           ySoldier = 80* rowSoldier;
           gameState = 1;
+          steps = 0;
         }
       }
       break;
@@ -167,26 +204,14 @@ void draw(){
 
 void keyPressed(){
   if(key == CODED){
-    switch(keyCode){
-      case DOWN:
-        yGroundhog += 80;
-        if(yGroundhog >= height-80){
-          yGroundhog = height-80;
-        }
-        break;
-        
-      case LEFT:
-        xGroundhog -= 80;
-        if(xGroundhog <= 0){
-          xGroundhog = 0;
-        }
-        break;
-      case RIGHT:
-        xGroundhog += 80;
-        if(xGroundhog >= width-80){
-          xGroundhog = width-80;
-        }
-        break;
-      }
+    if(keyCode == DOWN){
+      moveState = 4;
+    }
+    if(keyCode == LEFT){
+      moveState = 5;
+    }
+    if(keyCode == RIGHT){
+      moveState = 6;
     }
   }
+}
