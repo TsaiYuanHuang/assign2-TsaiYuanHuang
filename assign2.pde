@@ -15,7 +15,7 @@ final int GAME_RUN = 1;
 final int GAME_OVER = 2;
 int gameState = GAME_START;
 
-float speed = 80/15;
+float speed = 80/20;
 int steps = 0;
 final int IDLE = 3;
 final int GO_DOWN = 4;
@@ -124,7 +124,7 @@ void draw(){
         case 4:
           steps ++;
           yGroundhog += speed;
-          if(steps == 16){
+          if(steps == 20){
             steps = 0; 
             image(groundhogIdleImg,xGroundhog,yGroundhog);
             moveState = 3;
@@ -137,7 +137,7 @@ void draw(){
         case 5:
           steps ++;
           xGroundhog -= speed;
-          if(steps == 16){
+          if(steps == 20){
             steps = 0; 
             image(groundhogIdleImg,xGroundhog,yGroundhog);
             moveState = 3;
@@ -150,7 +150,7 @@ void draw(){
         case 6:
           steps ++;
           xGroundhog += speed;
-          if(steps == 16){
+          if(steps == 20){
             steps = 0; 
             image(groundhogIdleImg,xGroundhog,yGroundhog);
             moveState = 3;
