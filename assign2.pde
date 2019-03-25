@@ -206,13 +206,19 @@ void draw(){
 void keyPressed(){
   if(key == CODED){
     if(keyCode == DOWN){
-      moveState = 4;
+      if(steps != 80/16 || steps != 0){
+        moveState = 4;
+      }
     }
     if(keyCode == LEFT){
-      moveState = 5;
+      if(steps == 80/16 || steps == 0){
+        moveState = 5;
+      }
     }
     if(keyCode == RIGHT){
-      moveState = 6;
+      if(steps == 80/16 || steps == 0){
+        moveState = 6;
+      }
     }
   }
 }
