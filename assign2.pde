@@ -206,7 +206,7 @@ void draw(){
 void keyPressed(){
   if(key == CODED){
     if(keyCode == DOWN){
-      if(steps != 80/16 || steps != 0){
+      if(steps == 80/16 || steps == 0){
         moveState = 4;
       }
     }
