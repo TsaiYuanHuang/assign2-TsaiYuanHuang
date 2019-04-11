@@ -73,6 +73,7 @@ void draw(){
     case 1:
       //background image
       image(bgImg, 0, 0);
+      
     
       //AABB detection_soldier & groundhog
       if(xGroundhog < xSoldier+80 && xGroundhog+80 > xSoldier &&
@@ -195,8 +196,10 @@ void draw(){
           rowSoldier = floor(random(2,6));
           xSoldier = -80;
           ySoldier = 80* rowSoldier;
-          gameState = 1;
           steps = 0;
+          gameState = 1;
+          moveState = 3;
+          
         }
       }
       break;
@@ -206,17 +209,17 @@ void draw(){
 void keyPressed(){
   if(key == CODED){
     if(keyCode == DOWN){
-      if(steps == 80/16 || steps == 0){
+      if(steps == 0){
         moveState = 4;
       }
     }
     if(keyCode == LEFT){
-      if(steps == 80/16 || steps == 0){
+      if(steps == 0){
         moveState = 5;
       }
     }
     if(keyCode == RIGHT){
-      if(steps == 80/16 || steps == 0){
+      if(steps == 0){
         moveState = 6;
       }
     }
